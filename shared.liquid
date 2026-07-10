@@ -1,0 +1,207 @@
+<style>
+  .view--full .weather-image {
+    width: 180px;
+  }
+
+  .weather-icon {
+    width: 50px;
+  }
+
+  .weather-icon-mini {
+    width: 24px;
+  }
+
+  .view--half_vertical .weather-image {
+    width: 160px;
+  }
+</style>
+
+{%liquid
+  assign intervals = data.timelines[0].intervals
+
+  assign image_day = ""
+  assign condition = ""
+  assign daily_temps_max = ""
+  assign daily_temps_min = ""
+  assign daily_humidity = ""
+  assign daily_rain_prob = ""
+  assign daily_uv_index = ""
+  assign daily_wind_speed = ""
+  assign daily_wind_icon = ""
+  assign daily_dates = ""
+
+  for i in (0..4)
+    assign interval = intervals[i]
+
+    if interval
+      assign code       = interval.values.weatherCode | plus: 0
+      assign temp_max   = interval.values.temperatureMax
+      assign temp_min   = interval.values.temperatureMin
+      assign humidity   = interval.values.humidity
+      assign rain_prob  = interval.values.precipitationProbability | plus: 0
+      assign uv_index   = interval.values.uvIndex
+      assign wind_speed = interval.values.windSpeed
+      assign date       = interval.startTime
+    else
+      assign code       = 1000
+      assign temp_max   = 20
+      assign temp_min   = 10
+      assign humidity   = 50
+      assign rain_prob  = 0
+      assign uv_index   = 0
+      assign wind_speed = 0
+      assign date       = ""
+    endif
+
+    if wind_speed < 0.3
+      assign wind_icon = "wi-wind-beaufort-0.svg"
+    elsif wind_speed < 1.6
+      assign wind_icon = "wi-wind-beaufort-1.svg"
+    elsif wind_speed < 3.4
+      assign wind_icon = "wi-wind-beaufort-2.svg"
+    elsif wind_speed < 5.5
+      assign wind_icon = "wi-wind-beaufort-3.svg"
+    elsif wind_speed < 8.0
+      assign wind_icon = "wi-wind-beaufort-4.svg"
+    elsif wind_speed < 10.8
+      assign wind_icon = "wi-wind-beaufort-5.svg"
+    elsif wind_speed < 13.9
+      assign wind_icon = "wi-wind-beaufort-6.svg"
+    elsif wind_speed < 17.2
+      assign wind_icon = "wi-wind-beaufort-7.svg"
+    elsif wind_speed < 20.8
+      assign wind_icon = "wi-wind-beaufort-8.svg"
+    elsif wind_speed < 24.5
+      assign wind_icon = "wi-wind-beaufort-9.svg"
+    elsif wind_speed < 28.5
+      assign wind_icon = "wi-wind-beaufort-10.svg"
+    elsif wind_speed < 32.7
+      assign wind_icon = "wi-wind-beaufort-11.svg"
+    else
+      assign wind_icon = "wi-wind-beaufort-12.svg"
+    endif
+
+    assign daily_temps_max  = daily_temps_max  | append: temp_max   | append: ","
+    assign daily_temps_min  = daily_temps_min  | append: temp_min   | append: ","
+    assign daily_humidity   = daily_humidity   | append: humidity   | append: ","
+    assign daily_rain_prob  = daily_rain_prob  | append: rain_prob  | append: ","
+    assign daily_uv_index   = daily_uv_index   | append: uv_index   | append: ","
+    assign daily_wind_speed = daily_wind_speed | append: wind_speed | append: ","
+    assign daily_wind_icon  = daily_wind_icon  | append: wind_icon  | append: ","
+    assign daily_dates      = daily_dates      | append: date       | append: ","
+
+    comment
+      tomorrow.io weather codes → condition label + TRMNL weather icon
+      1000  Clear
+      1001  Cloudy
+      1100  Mostly Clear
+      1101  Partly Cloudy
+      1102  Mostly Cloudy
+      2000  Fog
+      2100  Light Fog
+      4000  Drizzle
+      4001  Rain
+      4200  Light Rain
+      4201  Heavy Rain
+      5000  Snow
+      5001  Flurries
+      5100  Light Snow
+      5101  Heavy Snow
+      6000  Freezing Drizzle
+      6001  Freezing Rain
+      6200  Light Freezing Rain
+      6201  Heavy Freezing Rain
+      7000  Ice Pellets
+      7101  Heavy Ice Pellets
+      7102  Light Ice Pellets
+      8000  Thunderstorm
+    endcomment
+
+    if code == 1000
+      assign condition  = condition  | append: "Clear,"
+      assign image_day  = image_day  | append: "wi-day-sunny.svg,"
+    elsif code == 1100
+      assign condition  = condition  | append: "Mostly Clear,"
+      assign image_day  = image_day  | append: "wi-day-sunny-overcast.svg,"
+    elsif code == 1101
+      assign condition  = condition  | append: "Partly Cloudy,"
+      assign image_day  = image_day  | append: "wi-day-cloudy.svg,"
+    elsif code == 1102
+      assign condition  = condition  | append: "Mostly Cloudy,"
+      assign image_day  = image_day  | append: "wi-day-cloudy.svg,"
+    elsif code == 1001
+      assign condition  = condition  | append: "Cloudy,"
+      assign image_day  = image_day  | append: "wi-cloudy.svg,"
+    elsif code == 2000
+      assign condition  = condition  | append: "Fog,"
+      assign image_day  = image_day  | append: "wi-day-fog.svg,"
+    elsif code == 2100
+      assign condition  = condition  | append: "Light Fog,"
+      assign image_day  = image_day  | append: "wi-day-fog.svg,"
+    elsif code == 4000
+      assign condition  = condition  | append: "Drizzle,"
+      assign image_day  = image_day  | append: "wi-day-sprinkle.svg,"
+    elsif code == 4200
+      assign condition  = condition  | append: "Light Rain,"
+      assign image_day  = image_day  | append: "wi-day-sprinkle.svg,"
+    elsif code == 4001
+      assign condition  = condition  | append: "Rain,"
+      assign image_day  = image_day  | append: "wi-day-rain.svg,"
+    elsif code == 4201
+      assign condition  = condition  | append: "Heavy Rain,"
+      assign image_day  = image_day  | append: "wi-day-rain.svg,"
+    elsif code == 5001
+      assign condition  = condition  | append: "Flurries,"
+      assign image_day  = image_day  | append: "wi-day-snow.svg,"
+    elsif code == 5100
+      assign condition  = condition  | append: "Light Snow,"
+      assign image_day  = image_day  | append: "wi-day-snow.svg,"
+    elsif code == 5000
+      assign condition  = condition  | append: "Snow,"
+      assign image_day  = image_day  | append: "wi-day-snow.svg,"
+    elsif code == 5101
+      assign condition  = condition  | append: "Heavy Snow,"
+      assign image_day  = image_day  | append: "wi-day-snow.svg,"
+    elsif code == 6000
+      assign condition  = condition  | append: "Freezing Drizzle,"
+      assign image_day  = image_day  | append: "wi-day-sleet.svg,"
+    elsif code == 6200
+      assign condition  = condition  | append: "Light Freezing Rain,"
+      assign image_day  = image_day  | append: "wi-day-sleet.svg,"
+    elsif code == 6001
+      assign condition  = condition  | append: "Freezing Rain,"
+      assign image_day  = image_day  | append: "wi-day-sleet.svg,"
+    elsif code == 6201
+      assign condition  = condition  | append: "Heavy Freezing Rain,"
+      assign image_day  = image_day  | append: "wi-day-sleet.svg,"
+    elsif code == 7102
+      assign condition  = condition  | append: "Light Ice Pellets,"
+      assign image_day  = image_day  | append: "wi-day-sleet.svg,"
+    elsif code == 7000
+      assign condition  = condition  | append: "Ice Pellets,"
+      assign image_day  = image_day  | append: "wi-day-sleet.svg,"
+    elsif code == 7101
+      assign condition  = condition  | append: "Heavy Ice Pellets,"
+      assign image_day  = image_day  | append: "wi-day-sleet.svg,"
+    elsif code == 8000
+      assign condition  = condition  | append: "Thunderstorm,"
+      assign image_day  = image_day  | append: "wi-day-thunderstorm.svg,"
+    else
+      assign condition  = condition  | append: "Unknown,"
+      assign image_day  = image_day  | append: "wi-day-sunny.svg,"
+    endif
+  endfor
+
+  assign image_day        = image_day        | split: ","
+  assign condition        = condition        | split: ","
+  assign daily_temps_max  = daily_temps_max  | split: ","
+  assign daily_temps_min  = daily_temps_min  | split: ","
+  assign daily_humidity   = daily_humidity   | split: ","
+  assign daily_rain_prob  = daily_rain_prob  | split: ","
+  assign daily_uv_index   = daily_uv_index   | split: ","
+  assign daily_wind_speed = daily_wind_speed | split: ","
+  assign daily_wind_icon  = daily_wind_icon  | split: ","
+  assign daily_dates      = daily_dates      | split: ","
+
+  assign update_time = trmnl.system.timestamp_utc | date: "%H:%M"
+%}

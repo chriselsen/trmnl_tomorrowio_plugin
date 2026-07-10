@@ -1,0 +1,49 @@
+---
+strategy: polling
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+polling_url: https://api.tomorrow.io/v4/timelines?location={{ trmnl.plugin_settings.custom_fields_values.latitude }},{{ trmnl.plugin_settings.custom_fields_values.longitude }}&timesteps=1d&fields=temperatureMax,temperatureMin,humidity,windSpeed,precipitationProbability,weatherCode,uvIndex&units={% if trmnl.plugin_settings.custom_fields_values.temp_unit == 'fahrenheit' %}imperial{% else %}metric{% endif %}&apikey={{ trmnl.plugin_settings.custom_fields_values.api_key }}
+polling_headers: ''
+polling_body: ''
+custom_fields:
+- keyname: bio
+  name: About This Plugin
+  field_type: author_bio
+  description: Get a clear snapshot of today's weather plus a 5-day forecast, including temperatures, UV indexes and rain chances — powered by tomorrow.io.
+- keyname: latitude
+  field_type: string
+  name: Latitude
+  description: The latitude of your location
+  placeholder: Latitude
+  help_text: Go to <a href="https://www.latlong.net" target="_blank">https://www.latlong.net</a>, search for the desired place or navigate using the map, then copy the latitude.
+- keyname: longitude
+  field_type: string
+  name: Longitude
+  description: The longitude of your location
+  placeholder: Longitude
+  help_text: Go to <a href="https://www.latlong.net" target="_blank">https://www.latlong.net</a>, search for the desired place or navigate using the map, then copy the longitude.
+- keyname: api_key
+  field_type: string
+  name: Tomorrow.io API Key
+  description: Your tomorrow.io API key
+  placeholder: Enter your API key
+  help_text: Get your free API key at <a href="https://app.tomorrow.io/development/keys" target="_blank">https://app.tomorrow.io/development/keys</a>
+- keyname: temp_unit
+  field_type: select
+  name: Temperature Unit
+  description: Select the desired temperature unit
+  default: celsius
+  options:
+  - Celsius: celsius
+  - Fahrenheit: fahrenheit
+- keyname: location_name
+  field_type: string
+  optional: true
+  name: Location Name
+  placeholder: Location name
+  description: 'Give a name to help identify this location (eg: home, office, city name, etc.)'
+  help_text: This name will be displayed at the right side of the plugin title bar.
+name: Daily Weather Forecast (tomorrow.io)
+refresh_interval: 720
