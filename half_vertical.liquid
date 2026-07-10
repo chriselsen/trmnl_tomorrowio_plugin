@@ -59,7 +59,7 @@
           <img class="weather-icon-mini image-stroke" src="https://usetrmnl.com/images/plugins/weather/wi-rain.svg" />
           <span class="value value--xxsmall text-stroke">{{ daily_rain_prob[i] | round }}%</span>
           <img class="weather-icon-mini image-stroke" src="https://usetrmnl.com/images/plugins/weather/{{ daily_wind_icon[i] }}">
-          <span class="value value--xxsmall text-stroke mr--1">{{ daily_wind_label[i] }}<sup>m</sup>/<sub>s</sub></span>
+          <span class="value value--xxsmall text-stroke mr--1">{{ daily_wind_speed[i] | round }}<sup>m</sup>/<sub>s</sub></span>
         </div>
       </div>
     </div>
