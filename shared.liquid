@@ -112,6 +112,7 @@
       1100  Mostly Clear
       1101  Partly Cloudy
       1102  Mostly Cloudy
+      1103  Mostly Clear (night variant)
       2000  Fog
       2100  Light Fog
       4000  Drizzle
@@ -144,6 +145,9 @@
     elsif code == 1102
       assign condition  = condition  | append: "Mostly Cloudy,"
       assign image_day  = image_day  | append: "wi-day-cloudy.svg,"
+    elsif code == 1103
+      assign condition  = condition  | append: "Mostly Clear,"
+      assign image_day  = image_day  | append: "wi-day-sunny-overcast.svg,"
     elsif code == 1001
       assign condition  = condition  | append: "Cloudy,"
       assign image_day  = image_day  | append: "wi-cloudy.svg,"
