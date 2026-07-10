@@ -4,7 +4,7 @@ no_screen_padding: 'no'
 dark_mode: 'no'
 static_data: ''
 polling_verb: get
-polling_url: https://api.tomorrow.io/v4/timelines?location={{ trmnl.plugin_settings.custom_fields_values.latitude }},{{ trmnl.plugin_settings.custom_fields_values.longitude }}&timesteps=1d&fields=temperatureMax,temperatureMin,humidity,windSpeed,precipitationProbability,weatherCode,uvIndex&units={% if trmnl.plugin_settings.custom_fields_values.temp_unit == 'fahrenheit' %}imperial{% else %}metric{% endif %}&apikey={{ trmnl.plugin_settings.custom_fields_values.api_key }}
+polling_url: https://api.tomorrow.io/v4/timelines?location={{ trmnl.plugin_settings.custom_fields_values.latitude }},{{ trmnl.plugin_settings.custom_fields_values.longitude }}&timesteps=1d&fields=temperatureMax,temperatureMin,humidity,windSpeed,windGust,precipitationProbability,weatherCode,uvIndex&units={% if trmnl.plugin_settings.custom_fields_values.temp_unit == 'fahrenheit' %}imperial{% else %}metric{% endif %}&apikey={{ trmnl.plugin_settings.custom_fields_values.api_key }}
 polling_headers: ''
 polling_body: ''
 custom_fields:

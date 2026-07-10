@@ -28,6 +28,7 @@
   assign daily_uv_index = ""
   assign daily_wind_speed = ""
   assign daily_wind_icon = ""
+  assign daily_wind_label = ""
   assign daily_dates = ""
 
   for i in (0..4)
@@ -41,6 +42,7 @@
       assign rain_prob  = interval.values.precipitationProbability | plus: 0
       assign uv_index   = interval.values.uvIndex
       assign wind_speed = interval.values.windSpeed
+      assign wind_gust  = interval.values.windGust
       assign date       = interval.startTime
     else
       assign code       = 1000
@@ -50,6 +52,7 @@
       assign rain_prob  = 0
       assign uv_index   = 0
       assign wind_speed = 0
+      assign wind_gust  = 0
       assign date       = ""
     endif
 
@@ -89,6 +92,18 @@
     assign daily_wind_speed = daily_wind_speed | append: wind_speed | append: ","
     assign daily_wind_icon  = daily_wind_icon  | append: wind_icon  | append: ","
     assign daily_dates      = daily_dates      | append: date       | append: ","
+
+    comment
+      Build wind label: "5-7" when gust > speed, otherwise just "5"
+    endcomment
+    assign wind_speed_rounded = wind_speed | round
+    assign wind_gust_rounded  = wind_gust  | round
+    if wind_gust_rounded > wind_speed_rounded
+      assign wind_label = wind_speed_rounded | append: "-" | append: wind_gust_rounded
+    else
+      assign wind_label = wind_speed_rounded | append: ""
+    endif
+    assign daily_wind_label = daily_wind_label | append: wind_label | append: ","
 
     comment
       tomorrow.io weather codes → condition label + TRMNL weather icon
@@ -201,6 +216,7 @@
   assign daily_uv_index   = daily_uv_index   | split: ","
   assign daily_wind_speed = daily_wind_speed | split: ","
   assign daily_wind_icon  = daily_wind_icon  | split: ","
+  assign daily_wind_label = daily_wind_label | split: ","
   assign daily_dates      = daily_dates      | split: ","
 
   assign update_time = trmnl.system.timestamp_utc | date: "%H:%M"
