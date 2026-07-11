@@ -223,5 +223,6 @@
   assign daily_wind_label = daily_wind_label | split: ","
   assign daily_dates      = daily_dates      | split: ","
 
-  assign update_time = trmnl.system.timestamp_utc | date: "%H:%M"
+  assign local_timestamp = trmnl.system.timestamp_utc | plus: trmnl.user.utc_offset
+  assign update_time = local_timestamp | date: "%H:%M"
 %}
