@@ -224,5 +224,5 @@
   assign daily_dates      = daily_dates      | split: ","
 
   assign local_timestamp = trmnl.system.timestamp_utc | plus: trmnl.user.utc_offset
-  assign update_time = local_timestamp | date: "%H:%M"
+  assign update_time = local_timestamp | date: "%Y-%m-%d %H:%M"
 %}
