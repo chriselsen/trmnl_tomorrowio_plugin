@@ -1,17 +1,17 @@
 <div class="layout layout--col gap--medium">
   <div class="grid">
     <div class="row row--center col--span-3 col--end">
-      <img class="weather-image" src="https://usetrmnl.com/images/plugins/weather/{{ image_day[o0] }}">
+      <img class="weather-image" src="https://usetrmnl.com/images/plugins/weather/{{ image_day[0] }}">
     </div>
     <div class="col col--span-3 col--end gap--medium">
-      <span class="title font--bold">{{ label0 }}: {{ condition[o0] }}</span>
+      <span class="title font--bold">Today: {{ condition[0] }}</span>
       <div class="item">
         <div class="meta"></div>
         <div class="icon">
           <img class="weather-icon" src="https://usetrmnl.com/images/plugins/weather/wi-thermometer.svg">
         </div>
         <div class="content">
-          <span class="value value--small font--bold">{{ daily_temps_max[o0] | round }}°</span>
+          <span class="value value--small font--bold">{{ daily_temps_max[0] | round }}°</span>
           <span class="label">High</span>
         </div>
       </div>
@@ -21,7 +21,7 @@
           <img class="weather-icon" src="https://usetrmnl.com/images/plugins/weather/wi-thermometer-exterior.svg">
         </div>
         <div class="content">
-          <span class="value value--small font--bold">{{ daily_temps_min[o0] | round }}°</span>
+          <span class="value value--small font--bold">{{ daily_temps_min[0] | round }}°</span>
           <span class="label">Low</span>
         </div>
       </div>
@@ -34,17 +34,17 @@
           <img class="weather-icon" src="https://usetrmnl.com/images/plugins/weather/wi-rain.svg">
         </div>
         <div class="content">
-          <span class="value value--small font--bold">{{ daily_rain_prob[o0] | round }}%</span>
+          <span class="value value--small font--bold">{{ daily_rain_prob[0] | round }}%</span>
           <span class="label">Rain</span>
         </div>
       </div>
       <div class="item">
         <div class="meta"></div>
         <div class="icon">
-          <img class="weather-icon" src="https://usetrmnl.com/images/plugins/weather/{{ daily_wind_icon[o0] }}">
+          <img class="weather-icon" src="https://usetrmnl.com/images/plugins/weather/{{ daily_wind_icon[0] }}">
         </div>
         <div class="content">
-          <span class="value value--small font--bold">{{ daily_wind_label[o0] }} <sup>m</sup>/<sub>s</sub></span>
+          <span class="value value--small font--bold">{{ daily_wind_label[0] }} <sup>m</sup>/<sub>s</sub></span>
           <span class="label">Wind Speed</span>
         </div>
       </div>
@@ -52,82 +52,31 @@
   </div>
   <!-- forecast -->
   <div class="grid grid--cols-4">
+    {% for i in (1..4) %}
     <div class="col col--start gap--medium text--center bg--gray-75 rounded--small p--2">
-      <span class="title text-stroke font--bold">{{ label1 }}</span>
+      {% if forloop.index == 1 %}
+      <span class="title text-stroke font--bold">Tomorrow</span>
+      {% else %}
+      <span class="title text-stroke font--bold">{{ daily_dates[i] | date: "%A" }}</span>
+      {% endif %}
       <div class="w--full">
-        <img class="weather-icon image-stroke" src="https://usetrmnl.com/images/plugins/weather/{% if image_day[o1] %}{{ image_day[o1] }}{% else %}wi-day-sunny.svg{% endif %}">
+        <img class="weather-icon image-stroke" src="https://usetrmnl.com/images/plugins/weather/{% if image_day[i] %}{{ image_day[i] }}{% else %}wi-day-sunny.svg{% endif %}">
         <br/>
-        <span class="value value--xsmall text-stroke">{% if condition[o1] %}{{ condition[o1] }}{% else %}Clear{% endif %}</span>
+        <span class="value value--xsmall text-stroke">{% if condition[i] %}{{ condition[i] }}{% else %}Clear{% endif %}</span>
       </div>
       <div class="w--full">
-        <span class="value value--xsmall text-stroke">{{ daily_temps_max[o1] | round }}° / {{ daily_temps_min[o1] | round }}°</span>
+        <span class="value value--xsmall text-stroke">{{ daily_temps_max[i] | round }}° / {{ daily_temps_min[i] | round }}°</span>
       </div>
       <div class="w--full">
         <div class="flex flex--row gap--xsmall">
           <img class="weather-icon-mini image-stroke" src="https://usetrmnl.com/images/plugins/weather/wi-rain.svg" />
-          <span class="value value--xxsmall text-stroke">{{ daily_rain_prob[o1] | round }}%</span>
-          <img class="weather-icon-mini image-stroke" src="https://usetrmnl.com/images/plugins/weather/{{ daily_wind_icon[o1] }}">
-          <span class="value value--xxsmall text-stroke mr--1">{{ daily_wind_label[o1] }}<sup>m</sup>/<sub>s</sub></span>
+          <span class="value value--xxsmall text-stroke">{{ daily_rain_prob[i] | round }}%</span>
+          <img class="weather-icon-mini image-stroke" src="https://usetrmnl.com/images/plugins/weather/{{ daily_wind_icon[i] }}">
+          <span class="value value--xxsmall text-stroke mr--1">{{ daily_wind_label[i] }}<sup>m</sup>/<sub>s</sub></span>
         </div>
       </div>
     </div>
-    <div class="col col--start gap--medium text--center bg--gray-75 rounded--small p--2">
-      <span class="title text-stroke font--bold">{{ label2 }}</span>
-      <div class="w--full">
-        <img class="weather-icon image-stroke" src="https://usetrmnl.com/images/plugins/weather/{% if image_day[o2] %}{{ image_day[o2] }}{% else %}wi-day-sunny.svg{% endif %}">
-        <br/>
-        <span class="value value--xsmall text-stroke">{% if condition[o2] %}{{ condition[o2] }}{% else %}Clear{% endif %}</span>
-      </div>
-      <div class="w--full">
-        <span class="value value--xsmall text-stroke">{{ daily_temps_max[o2] | round }}° / {{ daily_temps_min[o2] | round }}°</span>
-      </div>
-      <div class="w--full">
-        <div class="flex flex--row gap--xsmall">
-          <img class="weather-icon-mini image-stroke" src="https://usetrmnl.com/images/plugins/weather/wi-rain.svg" />
-          <span class="value value--xxsmall text-stroke">{{ daily_rain_prob[o2] | round }}%</span>
-          <img class="weather-icon-mini image-stroke" src="https://usetrmnl.com/images/plugins/weather/{{ daily_wind_icon[o2] }}">
-          <span class="value value--xxsmall text-stroke mr--1">{{ daily_wind_label[o2] }}<sup>m</sup>/<sub>s</sub></span>
-        </div>
-      </div>
-    </div>
-    <div class="col col--start gap--medium text--center bg--gray-75 rounded--small p--2">
-      <span class="title text-stroke font--bold">{{ label3 }}</span>
-      <div class="w--full">
-        <img class="weather-icon image-stroke" src="https://usetrmnl.com/images/plugins/weather/{% if image_day[o3] %}{{ image_day[o3] }}{% else %}wi-day-sunny.svg{% endif %}">
-        <br/>
-        <span class="value value--xsmall text-stroke">{% if condition[o3] %}{{ condition[o3] }}{% else %}Clear{% endif %}</span>
-      </div>
-      <div class="w--full">
-        <span class="value value--xsmall text-stroke">{{ daily_temps_max[o3] | round }}° / {{ daily_temps_min[o3] | round }}°</span>
-      </div>
-      <div class="w--full">
-        <div class="flex flex--row gap--xsmall">
-          <img class="weather-icon-mini image-stroke" src="https://usetrmnl.com/images/plugins/weather/wi-rain.svg" />
-          <span class="value value--xxsmall text-stroke">{{ daily_rain_prob[o3] | round }}%</span>
-          <img class="weather-icon-mini image-stroke" src="https://usetrmnl.com/images/plugins/weather/{{ daily_wind_icon[o3] }}">
-          <span class="value value--xxsmall text-stroke mr--1">{{ daily_wind_label[o3] }}<sup>m</sup>/<sub>s</sub></span>
-        </div>
-      </div>
-    </div>
-    <div class="col col--start gap--medium text--center bg--gray-75 rounded--small p--2">
-      <span class="title text-stroke font--bold">{{ label4 }}</span>
-      <div class="w--full">
-        <img class="weather-icon image-stroke" src="https://usetrmnl.com/images/plugins/weather/{% if image_day[o4] %}{{ image_day[o4] }}{% else %}wi-day-sunny.svg{% endif %}">
-        <br/>
-        <span class="value value--xsmall text-stroke">{% if condition[o4] %}{{ condition[o4] }}{% else %}Clear{% endif %}</span>
-      </div>
-      <div class="w--full">
-        <span class="value value--xsmall text-stroke">{{ daily_temps_max[o4] | round }}° / {{ daily_temps_min[o4] | round }}°</span>
-      </div>
-      <div class="w--full">
-        <div class="flex flex--row gap--xsmall">
-          <img class="weather-icon-mini image-stroke" src="https://usetrmnl.com/images/plugins/weather/wi-rain.svg" />
-          <span class="value value--xxsmall text-stroke">{{ daily_rain_prob[o4] | round }}%</span>
-          <img class="weather-icon-mini image-stroke" src="https://usetrmnl.com/images/plugins/weather/{{ daily_wind_icon[o4] }}">
-          <span class="value value--xxsmall text-stroke mr--1">{{ daily_wind_label[o4] }}<sup>m</sup>/<sub>s</sub></span>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </div>
 <div class="title_bar">
