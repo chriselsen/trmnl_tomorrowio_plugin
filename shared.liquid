@@ -225,4 +225,37 @@
 
   assign local_timestamp = trmnl.system.timestamp_utc | plus: trmnl.user.utc_offset
   assign update_time = local_timestamp | date: "%Y-%m-%d %H:%M"
+
+  comment
+    Forecast offset: after FORECAST_CUTOFF_HOUR local time, shift forward one day
+    so "Tomorrow" becomes the first forecast column instead of "Today"
+  endcomment
+  assign FORECAST_CUTOFF_HOUR = 15
+  assign local_hour = local_timestamp | date: "%H" | plus: 0
+  assign forecast_offset = 0
+  if local_hour >= FORECAST_CUTOFF_HOUR
+    assign forecast_offset = 1
+  endif
+
+  comment
+    Build daily_labels: 5 display names relative to forecast_offset.
+    When offset=0: Today, Tomorrow, Mon, Tue, Wed
+    When offset=1: Tomorrow, Mon, Tue, Wed, Thu
+  endcomment
+  assign o0 = forecast_offset
+  assign o1 = forecast_offset | plus: 1
+  assign o2 = forecast_offset | plus: 2
+  assign o3 = forecast_offset | plus: 3
+  assign o4 = forecast_offset | plus: 4
+
+  if forecast_offset == 0
+    assign label0 = "Today"
+    assign label1 = "Tomorrow"
+  else
+    assign label0 = "Tomorrow"
+    assign label1 = daily_dates[o1] | date: "%A"
+  endif
+  assign label2 = daily_dates[o2] | date: "%A"
+  assign label3 = daily_dates[o3] | date: "%A"
+  assign label4 = daily_dates[o4] | date: "%A"
 %}
